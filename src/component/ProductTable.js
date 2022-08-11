@@ -6,6 +6,10 @@ function ProductTable(props){
     let lastCategory = null
 
     props.products.forEach((product)=>{
+        if(props.inStockOnly && !product.stocked) return
+
+        if(product.name.indexOf(props.filterText) === -1) return   
+
         if(product.category !== lastCategory){
             rows.push(
                 <ProductCategoryRow 
@@ -14,18 +18,21 @@ function ProductTable(props){
                 />
             )
         }
+        lastCategory = product.category
+
+     
         rows.push(
             <ProductRow 
                 product={product}
                 key={product.name}
             />
         )
-        lastCategory = product.category
     })
+
     
     return (
        <table style={{ border: 'solid 1px green'}}>
-            <thead style={{backgroundColor: 'grey', color: 'white'}}>
+            <thead style={{ backgroundColor: 'grey', color: 'white' }}>
                 <tr>
                     <th>Name</th>
                     <th>Price</th>
